@@ -1,0 +1,17 @@
+# Editor and operating system noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.code-workspace
+
+# WordPress and deployment leftovers
+*.log
+*.zip
+*.tar.gz
+
+# Dependencies and build output
+node_modules/
+vendor/
+build/
+dist/
