@@ -261,6 +261,7 @@ Vira_SMS_OTP::forget( $fake );
 WP_CLI::log( "\n== The accounts ==" );
 
 $check( 'a number nobody registered has no account', false === Vira_SMS_Users::find_by_mobile( $fake ) );
+$check( 'WordPress lets an account exist with no address at all', false === email_exists( '' ) );
 $check( 'a user name is the number, not an email', '9123456789' === Vira_SMS_Phone::to_login( '9123456789' ) );
 
 $expected_role = get_role( 'customer' ) ? 'customer' : 'subscriber';

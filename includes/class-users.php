@@ -93,31 +93,6 @@ class Vira_SMS_Users {
 	}
 
 	/**
-	 * A unique placeholder address for a number.
-	 *
-	 * @param string $mobile Ten digits.
-	 * @return string
-	 */
-	private static function placeholder_email( $mobile ) {
-		$host = wp_parse_url( home_url(), PHP_URL_HOST );
-		$host = $host ? $host : 'example.invalid';
-
-		$candidates = array(
-			$mobile . '@' . $host,
-			$mobile . '.sms@' . $host,
-			$mobile . '.' . wp_rand( 1000, 9999 ) . '@' . $host,
-		);
-
-		foreach ( $candidates as $candidate ) {
-			if ( ! email_exists( $candidate ) ) {
-				return $candidate;
-			}
-		}
-
-		return $mobile . '.' . time() . '@' . $host;
-	}
-
-	/**
 	 * Create the account for a number.
 	 *
 	 * @param string $mobile     Ten digits.
@@ -139,7 +114,13 @@ class Vira_SMS_Users {
 		$user_id = wp_insert_user(
 			array(
 				'user_login'   => Vira_SMS_Phone::to_login( $mobile ),
-				'user_email'   => self::placeholder_email( $mobile ),
+				/*
+				 * No address at all, the way a mobile-only account is meant to be: the number is
+				 * the account. WordPress allows it - the user_email column is indexed but not
+				 * unique, and its existence check ignores an empty value, so any number of
+				 * accounts can live without one. Nothing is invented on the visitor's behalf.
+				 */
+				'user_email'   => '',
 				'user_pass'    => wp_generate_password( 32, true, true ),
 				'first_name'   => $first_name,
 				'last_name'    => $last_name,
