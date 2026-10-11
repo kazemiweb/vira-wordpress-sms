@@ -1,0 +1,204 @@
+/*
+ * The sign-in form.
+ *
+ * Deliberately small and neutral: colours come from the four custom properties below, so a theme
+ * can restyle the form without touching this file, and the font comes from the plugin's own
+ * setting through `--vira-sms-font`, falling back to whatever the theme already uses.
+ */
+
+.vira-sms {
+	--vira-sms-font: inherit;
+	--vira-sms-text: #1c1c1c;
+	--vira-sms-muted: #6b6b6b;
+	--vira-sms-surface: #ffffff;
+	--vira-sms-border: rgba(28, 28, 28, 0.14);
+	--vira-sms-accent: #1c1c1c;
+	--vira-sms-accent-text: #ffffff;
+	--vira-sms-error: #b3261e;
+	--vira-sms-success: #1b6d3a;
+	--vira-sms-radius: 12px;
+
+	font-family: var(--vira-sms-font);
+	color: var(--vira-sms-text);
+	max-inline-size: 26rem;
+	margin-inline: auto;
+	padding: 1.5rem;
+	background: var(--vira-sms-surface);
+	border: 1px solid var(--vira-sms-border);
+	border-radius: var(--vira-sms-radius);
+	text-align: start;
+	line-height: 1.8;
+	box-sizing: border-box;
+}
+
+.vira-sms *,
+.vira-sms *::before,
+.vira-sms *::after {
+	box-sizing: border-box;
+}
+
+.vira-sms__step[hidden] {
+	display: none;
+}
+
+.vira-sms__label {
+	display: block;
+	margin-block-end: 0.35rem;
+	font-size: 0.9rem;
+	color: var(--vira-sms-muted);
+}
+
+.vira-sms__input {
+	display: block;
+	inline-size: 100%;
+	padding: 0.7rem 0.85rem;
+	margin-block-end: 0.85rem;
+	font: inherit;
+	color: inherit;
+	background: transparent;
+	border: 1px solid var(--vira-sms-border);
+	border-radius: calc(var(--vira-sms-radius) - 4px);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vira-sms__input:focus {
+	outline: none;
+	border-color: var(--vira-sms-accent);
+	box-shadow: 0 0 0 3px rgba(28, 28, 28, 0.08);
+}
+
+.vira-sms__input--mobile {
+	text-align: center;
+	letter-spacing: 0.06em;
+}
+
+.vira-sms__input--code {
+	text-align: center;
+	letter-spacing: 0.4em;
+	font-size: 1.15rem;
+	font-weight: 600;
+}
+
+.vira-sms__button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	inline-size: 100%;
+	padding: 0.8rem 1rem;
+	font: inherit;
+	font-weight: 600;
+	color: var(--vira-sms-accent-text);
+	background: var(--vira-sms-accent);
+	border: 1px solid var(--vira-sms-accent);
+	border-radius: calc(var(--vira-sms-radius) - 4px);
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+.vira-sms__button:hover:not(:disabled) {
+	opacity: 0.9;
+}
+
+.vira-sms__button:disabled {
+	opacity: 0.7;
+	cursor: progress;
+}
+
+.vira-sms__spinner {
+	display: none;
+	inline-size: 1rem;
+	block-size: 1rem;
+	border: 2px solid currentColor;
+	border-block-start-color: transparent;
+	border-radius: 50%;
+	animation: vira-sms-spin 0.7s linear infinite;
+}
+
+.vira-sms__button.is-loading .vira-sms__spinner {
+	display: inline-block;
+}
+
+.vira-sms__actions {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin-block-start: 0.75rem;
+}
+
+.vira-sms__link {
+	padding: 0;
+	font: inherit;
+	font-size: 0.85rem;
+	color: var(--vira-sms-muted);
+	background: none;
+	border: 0;
+	cursor: pointer;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.vira-sms__link:disabled {
+	color: var(--vira-sms-border);
+	cursor: default;
+	text-decoration: none;
+}
+
+.vira-sms__hint,
+.vira-sms__sent,
+.vira-sms__note {
+	margin-block: 0.6rem 0;
+	font-size: 0.85rem;
+	color: var(--vira-sms-muted);
+}
+
+.vira-sms__sent {
+	color: var(--vira-sms-text);
+	margin-block-start: 0;
+}
+
+.vira-sms__message {
+	margin-block: 0.85rem 0;
+	font-size: 0.9rem;
+	min-block-size: 1.4em;
+}
+
+.vira-sms__message:empty {
+	margin-block-start: 0;
+}
+
+.vira-sms__message.is-error {
+	color: var(--vira-sms-error);
+}
+
+.vira-sms__message.is-success {
+	color: var(--vira-sms-success);
+}
+
+.vira-sms--signed-in {
+	text-align: center;
+}
+
+.vira-sms--signed-in a {
+	color: inherit;
+}
+
+@keyframes vira-sms-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.vira-sms__spinner {
+		animation-duration: 2s;
+	}
+}
+
+@media (max-width: 480px) {
+	.vira-sms {
+		padding: 1.15rem;
+		border-radius: 10px;
+	}
+}
