@@ -324,6 +324,20 @@ class Vira_SMS_Settings_Page {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="vira-sms-login_url"><?php esc_html_e( 'نشانی برگه‌ی ورود', 'vira-wordpress-sms' ); ?></label></th>
+						<td>
+							<?php
+							$this->field(
+								array(
+									'key'         => 'login_url',
+									'placeholder' => home_url( '/ورود/' ),
+									'description' => __( 'برگه‌ای که کد کوتاه فرم در آن است. اگر پر شود، هرجا سایت کاربر را به فرم ورود ووکامرس یا وردپرس بفرستد به این برگه می‌آید و خروج هم به همین برگه برمی‌گردد. خالی بگذارید تا هیچ‌کدام تغییر نکند.', 'vira-wordpress-sms' ),
+								)
+							);
+							?>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><label for="vira-sms-font"><?php esc_html_e( 'نام فونت', 'vira-wordpress-sms' ); ?></label></th>
 						<td>
 							<?php

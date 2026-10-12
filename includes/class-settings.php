@@ -55,8 +55,9 @@ class Vira_SMS_Settings {
 			'resend_wait'    => 60,
 			'max_attempts'   => 5,
 
-			// Where the visitor lands, and how the form looks.
+			// Where the visitor lands, where the other sign-in doors lead, and how the form looks.
 			'redirect_url'   => '',
+			'login_url'      => '',
 			'font'           => '',
 		);
 	}
@@ -230,6 +231,20 @@ class Vira_SMS_Settings {
 	}
 
 	/**
+	 * The page holding the form, used wherever the front end would ask for a password.
+	 *
+	 * Empty means the plugin leaves every sign-in link, the account page and the logout flow
+	 * exactly as the site already has them.
+	 *
+	 * @return string
+	 */
+	public static function login_url() {
+		$url = trim( (string) self::get( 'login_url' ) );
+
+		return ( '' === $url ) ? '' : $url;
+	}
+
+	/**
 	 * The font every part of the form is drawn in. Empty means the theme's own font.
 	 *
 	 * @return string
@@ -331,8 +346,11 @@ class Vira_SMS_Settings {
 		$clean['resend_wait']  = isset( $input['resend_wait'] ) ? max( 0, (int) $input['resend_wait'] ) : $current['resend_wait'];
 		$clean['max_attempts'] = isset( $input['max_attempts'] ) ? max( 1, min( 10, (int) $input['max_attempts'] ) ) : $current['max_attempts'];
 
-		$redirect               = isset( $input['redirect_url'] ) ? trim( (string) $input['redirect_url'] ) : $current['redirect_url'];
-		$clean['redirect_url']  = ( '' === $redirect ) ? '' : esc_url_raw( $redirect );
+		$redirect              = isset( $input['redirect_url'] ) ? trim( (string) $input['redirect_url'] ) : $current['redirect_url'];
+		$clean['redirect_url'] = ( '' === $redirect ) ? '' : esc_url_raw( $redirect );
+
+		$login              = isset( $input['login_url'] ) ? trim( (string) $input['login_url'] ) : $current['login_url'];
+		$clean['login_url'] = ( '' === $login ) ? '' : esc_url_raw( $login );
 
 		$font         = isset( $input['font'] ) ? (string) $input['font'] : $current['font'];
 		$clean['font'] = trim( (string) preg_replace( '/[^A-Za-z0-9\s,"\'\-_]/u', '', $font ) );

@@ -268,6 +268,34 @@ $expected_role = get_role( 'customer' ) ? 'customer' : 'subscriber';
 
 $check( 'a new account takes the shop\'s customer role', $expected_role === Vira_SMS_Users::new_user_role(), Vira_SMS_Users::new_user_role() );
 
+WP_CLI::log( "\n== The other sign-in doors ==" );
+
+$check( 'the sign-in page setting starts empty', '' === Vira_SMS_Settings::login_url() );
+$check( 'with no page set, a login link is left alone', 'https://example.test/wp-login.php' === Vira_SMS_Login_Links::login_url( 'https://example.test/wp-login.php', '', false ) );
+$check( 'with no page set, signing out is left alone', 'https://example.test/goodbye' === Vira_SMS_Login_Links::logout_redirect( 'https://example.test/goodbye', '', null ) );
+
+// Point the setting at a page for a moment, then put the option back exactly as it was.
+$stored    = get_option( Vira_SMS_Settings::OPTION, false );
+$form_page = home_url( '/sign-in-page-check/' );
+
+update_option( Vira_SMS_Settings::OPTION, array_merge( (array) $stored, array( 'login_url' => $form_page ) ) );
+Vira_SMS_Settings::flush();
+
+$check( 'the setting is read back', $form_page === Vira_SMS_Settings::login_url() );
+$check( 'a front-end login link now points at the form', $form_page === Vira_SMS_Login_Links::login_url( 'https://example.test/wp-login.php', home_url( '/shop/' ), false ) );
+$check( 'the admin side keeps its own door', 'https://example.test/wp-login.php' === Vira_SMS_Login_Links::login_url( 'https://example.test/wp-login.php', admin_url( 'edit.php' ), false ) );
+$check( 'signing out now ends on the form', $form_page === Vira_SMS_Login_Links::logout_redirect( home_url( '/my-account/' ), '', null ) );
+
+if ( false === $stored ) {
+	delete_option( Vira_SMS_Settings::OPTION );
+} else {
+	update_option( Vira_SMS_Settings::OPTION, $stored );
+}
+
+Vira_SMS_Settings::flush();
+
+$check( 'the setting is put back as it was', '' === Vira_SMS_Settings::login_url() );
+
 WP_CLI::log( "\n== The form ==" );
 
 $html = do_shortcode( '[' . Vira_SMS_Shortcode::TAG . ']' );
