@@ -3,7 +3,7 @@
  * Plugin Name:       افزونه ورود و ثبت نام پیامکی ویرا
  * Plugin URI:        https://vira-team.com
  * Description:       این افزونه برای ورود و ثبت نام با استفاده از پیامک و کد یک بار مصرف می‌باشد و با افزونه ووکامرس نیز سازگاری کامل دارد. این افزونه در حال حاضر با سامانه پیام کوتاه ippanel هماهنگ می‌باشد.
- * Version:           0.3.0
+ * Version:           0.3.1
  * Author:            محمود کاظمی
  * Author URI:        https://vira-team.com
  * License:           GPLv2 or later
@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * The version WordPress reads when a script or stylesheet is enqueued.
  */
-define( 'VIRA_SMS_VERSION', '0.3.0' );
+define( 'VIRA_SMS_VERSION', '0.3.1' );
 
 /**
  * Absolute path to the main plugin file.

@@ -13,7 +13,7 @@
 | نام | افزونه ورود و ثبت نام پیامکی ویرا |
 | نویسنده | محمود کاظمی |
 | سایت نویسنده | [vira-team.com](https://vira-team.com) |
-| نسخه | 0.3.0 |
+| نسخه | 0.3.1 |
 | شناسه متن | `vira-wordpress-sms` |
 | مخزن | [gitea/vira-wordpress-sms](https://app-gitea-7chiq.apps.teh2.abrhapaas.com/gitea/vira-wordpress-sms) |
 | مجوز | GPLv2 یا بالاتر |
