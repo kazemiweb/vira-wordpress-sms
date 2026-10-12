@@ -338,6 +338,20 @@ class Vira_SMS_Settings_Page {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="vira-sms-account_url"><?php esc_html_e( 'نشانی حساب کاربری', 'vira-wordpress-sms' ); ?></label></th>
+						<td>
+							<?php
+							$this->field(
+								array(
+									'key'         => 'account_url',
+									'placeholder' => home_url( '/my-account/' ),
+									'description' => __( 'جایی که دکمه‌ی سربرگ برای کاربر واردشده باز می‌کند. خالی بگذارید تا صفحه‌ی حساب کاربری ووکامرس برود.', 'vira-wordpress-sms' ),
+								)
+							);
+							?>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><label for="vira-sms-font"><?php esc_html_e( 'نام فونت', 'vira-wordpress-sms' ); ?></label></th>
 						<td>
 							<?php

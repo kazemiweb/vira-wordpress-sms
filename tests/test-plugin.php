@@ -296,6 +296,52 @@ Vira_SMS_Settings::flush();
 
 $check( 'the setting is put back as it was', '' === Vira_SMS_Settings::login_url() );
 
+WP_CLI::log( "\n== The header button ==" );
+
+$stored = get_option( Vira_SMS_Settings::OPTION, false );
+$page   = home_url( '/sign-in-check/' );
+$mine   = home_url( '/account-check/' );
+
+update_option( Vira_SMS_Settings::OPTION, array_merge( (array) $stored, array( 'login_url' => $page, 'account_url' => $mine ) ) );
+Vira_SMS_Settings::flush();
+
+$guest = do_shortcode( '[' . Vira_SMS_Account_Link::TAG . ']' );
+
+$check( 'a visitor is offered sign-in', false !== strpos( $guest, 'ورود / ثبت‌نام' ) );
+$check( 'the sign-in link is the page from the settings', false !== strpos( $guest, esc_url( $page ) ) );
+
+wp_set_current_user( 1 );
+
+$member = do_shortcode( '[' . Vira_SMS_Account_Link::TAG . ']' );
+
+$check( 'a signed-in visitor is offered their account', false !== strpos( $member, 'حساب کاربری' ) );
+$check( 'the account link is the page from the settings', false !== strpos( $member, esc_url( $mine ) ) );
+$check( 'the two states print different links', $guest !== $member );
+
+update_option( Vira_SMS_Settings::OPTION, array_merge( (array) $stored, array( 'login_url' => '', 'account_url' => '' ) ) );
+Vira_SMS_Settings::flush();
+
+$fallback = do_shortcode( '[' . Vira_SMS_Account_Link::TAG . ']' );
+$shop     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : '';
+
+wp_set_current_user( 0 );
+
+$check( 'with no setting the account button still leads somewhere', false !== strpos( $fallback, 'href="' ) && false === strpos( $fallback, 'href=""' ) );
+
+if ( $shop ) {
+	$check( 'and that somewhere is the shop account page', false !== strpos( $fallback, esc_url( $shop ) ) );
+}
+
+if ( false === $stored ) {
+	delete_option( Vira_SMS_Settings::OPTION );
+} else {
+	update_option( Vira_SMS_Settings::OPTION, $stored );
+}
+
+Vira_SMS_Settings::flush();
+
+$check( 'the settings are back as they were', '' === Vira_SMS_Settings::login_url() && '' === Vira_SMS_Settings::account_url() );
+
 WP_CLI::log( "\n== The form ==" );
 
 $html = do_shortcode( '[' . Vira_SMS_Shortcode::TAG . ']' );

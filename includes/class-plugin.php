@@ -2,7 +2,7 @@
 /**
  * The plugin's wiring: which class answers which call.
  *
- * Nothing here reaches into WordPress beyond adding the shortcode, the four endpoints, the
+ * Nothing here reaches into WordPress beyond adding the shortcodes, the four endpoints, the
  * settings screen, the plugin's own translations and the front end's sign-in links. `wp-login.php`
  * and the checkout are never touched; the account page is only ever pointed at the form.
  *
@@ -42,9 +42,11 @@ class Vira_SMS_Plugin {
 	private function __construct() {
 		$shortcode = new Vira_SMS_Shortcode();
 		$ajax      = new Vira_SMS_Ajax();
+		$button    = new Vira_SMS_Account_Link();
 
 		$shortcode->register();
 		$ajax->register();
+		$button->register();
 
 		Vira_SMS_Login_Links::init();
 

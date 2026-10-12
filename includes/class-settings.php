@@ -58,6 +58,7 @@ class Vira_SMS_Settings {
 			// Where the visitor lands, where the other sign-in doors lead, and how the form looks.
 			'redirect_url'   => '',
 			'login_url'      => '',
+			'account_url'    => '',
 			'font'           => '',
 		);
 	}
@@ -245,6 +246,17 @@ class Vira_SMS_Settings {
 	}
 
 	/**
+	 * Where the header button sends a member. Empty means the shop's account page, or the profile.
+	 *
+	 * @return string
+	 */
+	public static function account_url() {
+		$url = trim( (string) self::get( 'account_url' ) );
+
+		return ( '' === $url ) ? '' : $url;
+	}
+
+	/**
 	 * The font every part of the form is drawn in. Empty means the theme's own font.
 	 *
 	 * @return string
@@ -351,6 +363,9 @@ class Vira_SMS_Settings {
 
 		$login              = isset( $input['login_url'] ) ? trim( (string) $input['login_url'] ) : $current['login_url'];
 		$clean['login_url'] = ( '' === $login ) ? '' : esc_url_raw( $login );
+
+		$account              = isset( $input['account_url'] ) ? trim( (string) $input['account_url'] ) : $current['account_url'];
+		$clean['account_url'] = ( '' === $account ) ? '' : esc_url_raw( $account );
 
 		$font         = isset( $input['font'] ) ? (string) $input['font'] : $current['font'];
 		$clean['font'] = trim( (string) preg_replace( '/[^A-Za-z0-9\s,"\'\-_]/u', '', $font ) );
