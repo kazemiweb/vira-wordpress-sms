@@ -109,6 +109,41 @@
 		}
 	}
 
+	/**
+	 * Run a step with its button busy.
+	 *
+	 * A step that comes back in a few milliseconds - checking a code, making an account - would
+	 * otherwise leave the spinner on screen for less time than the eye can catch, and the button
+	 * would look as if it had not been pressed at all. Every step therefore keeps its button busy
+	 * for at least this long, so the first press and the last behave the same way.
+	 */
+	var MIN_BUSY = 400;
+
+	function run( button, label, work ) {
+		setBusy( button, true, label );
+
+		var started = Date.now();
+
+		return work()
+			.then( function ( result ) {
+				var left = MIN_BUSY - ( Date.now() - started );
+
+				if ( left <= 0 ) {
+					return result;
+				}
+
+				return new Promise( function ( done ) {
+					window.setTimeout( function () {
+						done( result );
+					}, left );
+				} );
+			} )
+			.then( function ( result ) {
+				setBusy( button, false );
+				return result;
+			} );
+	}
+
 	function refreshNonce() {
 		var body = new FormData();
 
@@ -220,12 +255,11 @@
 			return;
 		}
 
-		setBusy( button, true, strings.sending );
 		say( '' );
 
-		request( 'vira_sms_send_code', { mobile: mobile } ).then( function ( result ) {
-			setBusy( button, false );
-
+		run( button, strings.sending, function () {
+			return request( 'vira_sms_send_code', { mobile: mobile } );
+		} ).then( function ( result ) {
 			if ( ! result.success ) {
 				say( result.data && result.data.message ? result.data.message : strings.networkError, 'error' );
 				return;
@@ -250,12 +284,11 @@
 			return;
 		}
 
-		setBusy( button, true, strings.verifying );
 		say( '' );
 
-		request( 'vira_sms_verify_code', { mobile: state.mobile, code: code } ).then( function ( result ) {
-			setBusy( button, false );
-
+		run( button, strings.verifying, function () {
+			return request( 'vira_sms_verify_code', { mobile: state.mobile, code: code } );
+		} ).then( function ( result ) {
 			if ( ! result.success ) {
 				say( result.data && result.data.message ? result.data.message : strings.networkError, 'error' );
 
@@ -296,12 +329,11 @@
 			return;
 		}
 
-		setBusy( button, true, strings.registering );
 		say( '' );
 
-		request( 'vira_sms_register', { ticket: state.ticket, first_name: first, last_name: last } ).then( function ( result ) {
-			setBusy( button, false );
-
+		run( button, strings.registering, function () {
+			return request( 'vira_sms_register', { ticket: state.ticket, first_name: first, last_name: last } );
+		} ).then( function ( result ) {
 			if ( ! result.success ) {
 				say( result.data && result.data.message ? result.data.message : strings.networkError, 'error' );
 
