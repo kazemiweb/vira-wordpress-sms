@@ -356,7 +356,17 @@
 	form.addEventListener( 'submit', function ( event ) {
 		event.preventDefault();
 
-		var button = event.submitter || form.querySelector( '[data-step]:not([hidden]) .vira-sms__button' );
+		/*
+		 * The button of the step on screen, never the form's first button: pressing Enter in a field
+		 * submits the form through the form's own default button, which is the hidden one belonging
+		 * to the first step, so the spinner would appear where nobody can see it.
+		 */
+		var step   = form.querySelector( '[data-step]:not([hidden])' );
+		var button = step ? step.querySelector( '.vira-sms__button' ) : null;
+
+		if ( event.submitter && step && step.contains( event.submitter ) ) {
+			button = event.submitter;
+		}
 
 		if ( 'code' === state.step ) {
 			verifyCode( button );
