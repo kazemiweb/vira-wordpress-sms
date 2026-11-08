@@ -15,6 +15,7 @@
 | سایت نویسنده | [vira-team.com](https://vira-team.com) |
 | نسخه | 0.4.0 |
 | شناسه متن | `vira-wordpress-sms` |
+| مخزن | [kazemiweb/vira-wordpress-sms](https://github.com/kazemiweb/vira-wordpress-sms) |
 | مجوز | GPLv2 یا بالاتر |
 
 توضیح افزونه: این افزونه برای ورود و ثبت نام با استفاده از پیامک و کد یک بار مصرف می‌باشد و با افزونه ووکامرس نیز سازگاری کامل دارد. این افزونه در حال حاضر با سامانه پیام کوتاه ippanel هماهنگ می‌باشد.

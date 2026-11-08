@@ -9,6 +9,11 @@ Thumbs.db
 *.log
 *.zip
 *.tar.gz
+.env
+.env.*
+!.env.example
+wp-config.php
+auth.json
 
 # Dependencies and build output
 node_modules/
